@@ -22,7 +22,7 @@ const SignupForm = () => {
     userType: "",
     lob: "",
     urlHandle: "",
-    photoImage: null, // Changed to file object
+    photo: null, // Changed to file object
     bannerImage: null, // Changed to file object
     tagLine: "",
   });
