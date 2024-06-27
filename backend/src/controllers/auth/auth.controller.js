@@ -5,6 +5,11 @@ import jwt from 'jsonwebtoken';
 
 
 
+
+
+
+
+
 const signUp = async (req, res) => {
   try {
     const { email, urlHandle } = req.body;
