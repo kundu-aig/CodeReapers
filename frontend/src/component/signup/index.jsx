@@ -125,7 +125,7 @@ const SignupForm = () => {
   return (
     <div
       style={{
-        background: "linear-gradient(to bottom, #3a7bd5, #00d2ff)",
+        background: "linear-gradient(to right, #0072ff, #00c6ff)",
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",

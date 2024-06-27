@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../styles/Login.module.css';
 import Loader from '../component/Loader';
+import apiClient from '../axios';
+
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -16,23 +18,22 @@ export default function Login() {
         e.preventDefault();
         setIsLoading(true);
 
-        const res = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
+        try{
+           let response= await apiClient.post("url",{email,password});
+           
+        }catch(error){
 
-        const data = await res.json();
-
-        setIsLoading(false);
-
-        if (res.ok) {
-            router.push('/dashboard');
-        } else {
-            setError(data.message);
         }
+        localStorage.setItem("authToken", "abcd");
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({ name: "nitin", userType: "market" })
+        );
+        
+    };
+
+    const handleSignUpRedirect = () => {
+        router.push('/signup');
     };
 
     return (
@@ -65,8 +66,8 @@ export default function Login() {
                     <button type="submit" className={styles.loginButton}>Login</button>
                 </form>
                 <div className={styles.links}>
-                    <a href="#">Forgot password?</a>
-                    <p>Don't have an account? <a href="#">Create new</a></p>
+                    {/* <a href="#">Forgot password?</a> */}
+                    <p>Don't have an account? <a onClick={handleSignUpRedirect} href="#">Create new</a></p>
                 </div>
             </div>
         </div>
