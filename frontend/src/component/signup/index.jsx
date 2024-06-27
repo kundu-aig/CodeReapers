@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import axios from "axios";
+import axios from "../../axios";
 
 const SignupForm = () => {
   const router = useRouter();
