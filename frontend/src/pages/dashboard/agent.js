@@ -14,10 +14,34 @@ const AgentDashboard = () => {
     localStorage.clear();
     router.push("/");
   };
+  const dashboard = () => {
+    let user = localStorage?.getItem("userData")
+      ? JSON.parse(localStorage?.getItem("userData"))
+      : "";
+    if (user?.userType) {
+      router.push(`/dashboard/${user?.userType}`);
+    }
+  };
   return (
     <Container fluid>
       <Row className="justify-content-between align-items-center py-3">
         <Col>
+          {!router?.asPath?.includes("/dashboard") && (
+            <Button className="mx-4" variant="primary" onClick={dashboard}>
+              Dashboard
+            </Button>
+          )}
+          {router?.asPath?.includes("/dashboard") && (
+            <Button
+              className="mx-4"
+              variant="primary"
+              onClick={() => {
+                router.push("/");
+              }}
+            >
+              Home
+            </Button>
+          )}
           <Button variant="primary" onClick={logout}>
             Logout
           </Button>

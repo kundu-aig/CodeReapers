@@ -74,6 +74,9 @@ export default function Login() {
           <button type="submit" className={styles.loginButton}>
             Login
           </button>
+
+          <a href="/"> Back to home</a>
+
           {/* Form Submission Status */}
           {loginStatus === "success" && (
             <Alert variant="success">LogIn successful!</Alert>
@@ -85,7 +88,6 @@ export default function Login() {
           )}
         </form>
         <div className={styles.links}>
-          {/* <a href="#">Forgot password?</a> */}
           <p>
             Don't have an account?{" "}
             <a onClick={handleSignUpRedirect} href="#">

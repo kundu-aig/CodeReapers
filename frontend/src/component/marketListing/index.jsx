@@ -84,7 +84,7 @@ const DocumentTable = () => {
               <Form.Group controlId="categoryFilter">
                 <Form.Label>Filter by Category</Form.Label>
                 <Form.Select
-                  size="small"
+                  size="sm"
                   value={categoryFilter}
                   onChange={(e) => {
                     setCategoryFilter(e.target.value);
@@ -102,7 +102,7 @@ const DocumentTable = () => {
               <Form.Group controlId="lobFilter">
                 <Form.Label>Filter by LOB</Form.Label>
                 <Form.Select
-                  size="small"
+                  size="sm"
                   value={lobFilter}
                   onChange={(e) => {
                     setLobFilter(e.target.value);
@@ -142,7 +142,7 @@ const DocumentTable = () => {
                     size="sm"
                     onClick={() => handleCopyUrl(item.url)}
                   >
-                    Copy URL
+                    Copy
                   </Button>
                 </td>
                 <td>{item.documentType}</td>

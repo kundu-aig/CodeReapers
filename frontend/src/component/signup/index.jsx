@@ -164,273 +164,263 @@ const SignupForm = () => {
   };
 
   return (
-    <div
-      style={{
-        // background: "linear-gradient(to right, #bcdade, #ffffff)",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Container>
-        <Row className="justify-content-center">
-          <Col xs={12} md={8} lg={6}>
-            <Form
-              onSubmit={handleSubmit}
-              style={{
-                background: "rgb(255, 255, 254)",
-                padding: "2rem",
-                borderRadius: "8px",
-              }}
-            >
-              {/* Basic Fields */}
-              <Form.Group className="mb-3" controlId="firstName">
-                <Form.Label>First Name *</Form.Label>
-                <Form.Control
-                  type="text"
-                  className={formErrors.firstName ? "is-invalid" : ""}
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
-                  maxLength={100}
-                />
-                {formErrors.firstName && (
-                  <Form.Control.Feedback type="invalid">
-                    {formErrors.firstName}
-                  </Form.Control.Feedback>
-                )}
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="lastName">
-                <Form.Label>Last Name *</Form.Label>
-                <Form.Control
-                  type="text"
-                  className={formErrors.lastName ? "is-invalid" : ""}
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                  maxLength={100}
-                />
-                {formErrors.lastName && (
-                  <Form.Control.Feedback type="invalid">
-                    {formErrors.lastName}
-                  </Form.Control.Feedback>
-                )}
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="email">
-                <Form.Label>Email address *</Form.Label>
-                <Form.Control
-                  type="email"
-                  className={formErrors.email ? "is-invalid" : ""}
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  maxLength={100}
-                />
-                {formErrors.email && (
-                  <Form.Control.Feedback type="invalid">
-                    {formErrors.email}
-                  </Form.Control.Feedback>
-                )}
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="password">
-                <Form.Label>Password *</Form.Label>
-                <Form.Control
-                  type="password"
-                  className={formErrors.password ? "is-invalid" : ""}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  minLength={4}
-                  maxLength={32}
-                />
-                {formErrors.password && (
-                  <Form.Control.Feedback type="invalid">
-                    {formErrors.password}
-                  </Form.Control.Feedback>
-                )}
-              </Form.Group>
-
-              {/* User Type Field */}
-              <Form.Group className="mb-3">
-                <Form.Label>User Type *</Form.Label>
-                <div>
-                  <Form.Check
-                    inline
-                    type="radio"
-                    id="userTypeAgent"
-                    value="agent"
-                    name="userType"
-                    label="Agent"
-                    onChange={handleChange}
-                    checked={formData.userType === "agent"}
-                  />
-                  <Form.Check
-                    inline
-                    type="radio"
-                    id="userTypeMarket"
-                    value="market"
-                    name="userType"
-                    label="Market"
-                    onChange={handleChange}
-                    checked={formData.userType === "market"}
-                  />
-                </div>
-                {formErrors.userType && (
-                  <Form.Control.Feedback
-                    type="invalid"
-                    style={{ display: "block" }}
-                  >
-                    {formErrors.userType}
-                  </Form.Control.Feedback>
-                )}
-              </Form.Group>
-
-              {/* Line of Business (LOB) Field */}
-              {/* {formData.userType === "agent" && ( */}
-              <Form.Group className="mb-3">
-                <Form.Label>Line of Business *</Form.Label>
-                <div>
-                  <Form.Check
-                    inline
-                    type="radio"
-                    id="lobMotor"
-                    value="motor"
-                    name="lob"
-                    label="Motor"
-                    onChange={handleChange}
-                    checked={formData.lob === "motor"}
-                  />
-                  <Form.Check
-                    inline
-                    type="radio"
-                    id="lobHealth"
-                    value="health"
-                    name="lob"
-                    label="Health"
-                    onChange={handleChange}
-                    checked={formData.lob === "health"}
-                  />
-                  <Form.Check
-                    inline
-                    type="radio"
-                    id="lobTravel"
-                    value="travel"
-                    name="lob"
-                    label="Travel"
-                    onChange={handleChange}
-                    checked={formData.lob === "travel"}
-                  />
-                </div>
-                {formErrors.lob && (
-                  <Form.Control.Feedback
-                    type="invalid"
-                    style={{ display: "block" }}
-                  >
-                    {formErrors.lob}
-                  </Form.Control.Feedback>
-                )}
-              </Form.Group>
-
-              {/* Additional Fields for Agent */}
-              {formData.userType === "agent" && (
-                <>
-                  <Form.Group className="mb-3" controlId="urlHandle">
-                    <Form.Label>URL Handle (Slug) *</Form.Label>
-                    <Form.Control
-                      type="text"
-                      className={formErrors.urlHandle ? "is-invalid" : ""}
-                      name="urlHandle"
-                      value={formData.urlHandle}
-                      onChange={handleChange}
-                      minLength={4}
-                      maxLength={40}
-                    />
-                    {formErrors.urlHandle && (
-                      <Form.Control.Feedback type="invalid">
-                        {formErrors.urlHandle}
-                      </Form.Control.Feedback>
-                    )}
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="photo">
-                    <Form.Label>Photo *</Form.Label>
-                    <Form.Control
-                      type="file"
-                      className={formErrors.photoUrl ? "is-invalid" : ""}
-                      name="photo"
-                      accept="image/*"
-                      onChange={handleChange}
-                    />
-                    {formErrors.photoUrl && (
-                      <Form.Control.Feedback type="invalid">
-                        {formErrors.photoUrl}
-                      </Form.Control.Feedback>
-                    )}
-                  </Form.Group>
-
-                  <Form.Group className="mb-3" controlId="logo">
-                    <Form.Label>Logo</Form.Label>
-                    <Form.Control
-                      type="file"
-                      name="logo"
-                      accept="image/*"
-                      onChange={handleChange}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="tagLine">
-                    <Form.Label>Tagline</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="tagLine"
-                      value={formData.tagLine}
-                      onChange={handleChange}
-                      maxLength={200}
-                    />
-                  </Form.Group>
-                </>
+    <Container className="my-4">
+      <Row className="justify-content-center">
+        <Col xs={12} md={8} lg={6}>
+          <Form
+            onSubmit={handleSubmit}
+            style={{
+              background: "rgb(255, 255, 254)",
+              padding: "2rem",
+              borderRadius: "8px",
+            }}
+          >
+            {/* Basic Fields */}
+            <Form.Group className="mb-3" controlId="firstName">
+              <Form.Label>First Name *</Form.Label>
+              <Form.Control
+                type="text"
+                className={formErrors.firstName ? "is-invalid" : ""}
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+                maxLength={100}
+              />
+              {formErrors.firstName && (
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.firstName}
+                </Form.Control.Feedback>
               )}
+            </Form.Group>
 
-              {/* Loader */}
-              {loading && (
-                <div className="text-center my-3">
-                  <Spinner animation="border" variant="primary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </Spinner>
-                </div>
+            <Form.Group className="mb-3" controlId="lastName">
+              <Form.Label>Last Name *</Form.Label>
+              <Form.Control
+                type="text"
+                className={formErrors.lastName ? "is-invalid" : ""}
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+                maxLength={100}
+              />
+              {formErrors.lastName && (
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.lastName}
+                </Form.Control.Feedback>
               )}
+            </Form.Group>
 
-              {/* Form Submission Status */}
-              {formStatus === "success" && (
-                <Alert variant="success">Signup successful!</Alert>
+            <Form.Group className="mb-3" controlId="email">
+              <Form.Label>Email address *</Form.Label>
+              <Form.Control
+                type="email"
+                className={formErrors.email ? "is-invalid" : ""}
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                maxLength={100}
+              />
+              {formErrors.email && (
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.email}
+                </Form.Control.Feedback>
               )}
-              {formStatus === "error" && (
-                <Alert variant="danger">
-                  Error submitting the form. Please try again later.
-                </Alert>
-              )}
+            </Form.Group>
 
-              {/* Submit Button */}
-              <Button type="submit" variant="primary" disabled={loading}>
-                {loading ? "Signing Up..." : "Sign Up"}
-              </Button>
-              <div className={styles.links} style={{ marginTop: "10px" }}>
-                {/* <a href="#">Forgot password?</a> */}
-                <p>
-                  Already have an account? <Link href="/login">Login</Link>
-                </p>
+            <Form.Group className="mb-3" controlId="password">
+              <Form.Label>Password *</Form.Label>
+              <Form.Control
+                type="password"
+                className={formErrors.password ? "is-invalid" : ""}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                minLength={4}
+                maxLength={32}
+              />
+              {formErrors.password && (
+                <Form.Control.Feedback type="invalid">
+                  {formErrors.password}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+
+            {/* User Type Field */}
+            <Form.Group className="mb-3">
+              <Form.Label>User Type *</Form.Label>
+              <div>
+                <Form.Check
+                  inline
+                  type="radio"
+                  id="userTypeAgent"
+                  value="agent"
+                  name="userType"
+                  label="Agent"
+                  onChange={handleChange}
+                  checked={formData.userType === "agent"}
+                />
+                <Form.Check
+                  inline
+                  type="radio"
+                  id="userTypeMarket"
+                  value="market"
+                  name="userType"
+                  label="Market"
+                  onChange={handleChange}
+                  checked={formData.userType === "market"}
+                />
               </div>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+              {formErrors.userType && (
+                <Form.Control.Feedback
+                  type="invalid"
+                  style={{ display: "block" }}
+                >
+                  {formErrors.userType}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+
+            {/* Line of Business (LOB) Field */}
+            {/* {formData.userType === "agent" && ( */}
+            <Form.Group className="mb-3">
+              <Form.Label>Line of Business *</Form.Label>
+              <div>
+                <Form.Check
+                  inline
+                  type="radio"
+                  id="lobMotor"
+                  value="motor"
+                  name="lob"
+                  label="Motor"
+                  onChange={handleChange}
+                  checked={formData.lob === "motor"}
+                />
+                <Form.Check
+                  inline
+                  type="radio"
+                  id="lobHealth"
+                  value="health"
+                  name="lob"
+                  label="Health"
+                  onChange={handleChange}
+                  checked={formData.lob === "health"}
+                />
+                <Form.Check
+                  inline
+                  type="radio"
+                  id="lobTravel"
+                  value="travel"
+                  name="lob"
+                  label="Travel"
+                  onChange={handleChange}
+                  checked={formData.lob === "travel"}
+                />
+              </div>
+              {formErrors.lob && (
+                <Form.Control.Feedback
+                  type="invalid"
+                  style={{ display: "block" }}
+                >
+                  {formErrors.lob}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+
+            {/* Additional Fields for Agent */}
+            {formData.userType === "agent" && (
+              <>
+                <Form.Group className="mb-3" controlId="urlHandle">
+                  <Form.Label>URL Handle (Slug) *</Form.Label>
+                  <Form.Control
+                    type="text"
+                    className={formErrors.urlHandle ? "is-invalid" : ""}
+                    name="urlHandle"
+                    value={formData.urlHandle}
+                    onChange={handleChange}
+                    minLength={4}
+                    maxLength={40}
+                  />
+                  {formErrors.urlHandle && (
+                    <Form.Control.Feedback type="invalid">
+                      {formErrors.urlHandle}
+                    </Form.Control.Feedback>
+                  )}
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="photo">
+                  <Form.Label>Photo *</Form.Label>
+                  <Form.Control
+                    type="file"
+                    className={formErrors.photoUrl ? "is-invalid" : ""}
+                    name="photo"
+                    accept="image/*"
+                    onChange={handleChange}
+                  />
+                  {formErrors.photoUrl && (
+                    <Form.Control.Feedback type="invalid">
+                      {formErrors.photoUrl}
+                    </Form.Control.Feedback>
+                  )}
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="logo">
+                  <Form.Label>Logo</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="logo"
+                    accept="image/*"
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="tagLine">
+                  <Form.Label>Tagline</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="tagLine"
+                    value={formData.tagLine}
+                    onChange={handleChange}
+                    maxLength={200}
+                  />
+                </Form.Group>
+              </>
+            )}
+
+            {/* Loader */}
+            {loading && (
+              <div className="text-center my-3">
+                <Spinner animation="border" variant="primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              </div>
+            )}
+
+            {/* Form Submission Status */}
+            {formStatus === "success" && (
+              <Alert variant="success">Signup successful!</Alert>
+            )}
+            {formStatus === "error" && (
+              <Alert variant="danger">
+                Error submitting the form. Please try again later.
+              </Alert>
+            )}
+
+            {/* Submit Button */}
+            <Button type="submit" variant="primary" disabled={loading}>
+              {loading ? "Signing Up..." : "Sign Up"}
+            </Button>
+            <div className={styles.links} style={{ marginTop: "10px" }}>
+              <p>
+                Already have an account? <Link href="/login">Login</Link>
+              </p>
+              <Link href="/">Back to home</Link>
+            </div>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

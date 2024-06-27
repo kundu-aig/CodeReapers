@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Card, Alert, Spinner, Container } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Card,
+  Col,
+  Row,
+  Alert,
+  Spinner,
+  Container,
+} from "react-bootstrap";
 import { useRouter } from "next/router";
 import axios from "axios";
 import withAuth from "../hoc/withAuth";
+import Profile from "../component/profile";
 
 const UpdateProfile = () => {
   const [formData, setFormData] = useState({
@@ -21,6 +31,7 @@ const UpdateProfile = () => {
 
   // Retrieve user data from localStorage
   const userData = JSON.parse(localStorage.getItem("userData"));
+  const userType = userData?.userType ?? "";
 
   useEffect(() => {
     // Fetch existing data from localStorage
@@ -32,7 +43,10 @@ const UpdateProfile = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+  const logout = () => {
+    localStorage.clear();
+    router.push("/");
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -58,28 +72,46 @@ const UpdateProfile = () => {
       setLoading(false);
     }
   };
-
+  const dashboard = () => {
+    let user = localStorage?.getItem("userData")
+      ? JSON.parse(localStorage?.getItem("userData"))
+      : "";
+    if (user?.userType) {
+      router.push(`/dashboard/${user?.userType}`);
+    }
+  };
   return (
-    <div
-      style={{
-        background: "linear-gradient(to bottom, #3a7bd5, #00d2ff)",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Container className="mobilemarginprofile">
-        <Card>
-          <Card.Header>
-            Update Profile
-            <Button
-              variant="secondary"
-              className="float-end"
-              onClick={() => router.push("/dashboard/" + userData?.userType)}
-            >
-              Go to Dashboard
+    <Container>
+      <Row className="justify-content-between align-items-center py-3">
+        <Col>
+          {!router?.asPath?.includes("/dashboard") && (
+            <Button className="mx-4" variant="primary" onClick={dashboard}>
+              Dashboard
             </Button>
+          )}
+          {router?.asPath?.includes("/dashboard") && (
+            <Button
+              className="mx-4"
+              variant="primary"
+              onClick={() => {
+                router.push("/");
+              }}
+            >
+              Home
+            </Button>
+          )}
+          <Button variant="primary" onClick={logout}>
+            Logout
+          </Button>
+        </Col>
+        <Col className="text-end">
+          <Profile />
+        </Col>
+      </Row>
+      <Row>
+        <Card className="my-4">
+          <Card.Header>
+            <Card.Title>Update Profile</Card.Title>
           </Card.Header>
           <Card.Body>
             {error && <Alert variant="danger">{error}</Alert>}
@@ -113,10 +145,12 @@ const UpdateProfile = () => {
                   value={formData.photo}
                   onChange={handleChange}
                 />
-                <img
-                  style={{ height: "150px", width: "150px", margin: "10px" }}
-                  src={formData.photo}
-                ></img>
+                {formData.photo && (
+                  <img
+                    style={{ height: "150px", width: "150px", margin: "10px" }}
+                    src={formData.photo}
+                  ></img>
+                )}
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Tagline</Form.Label>
@@ -127,7 +161,7 @@ const UpdateProfile = () => {
                   onChange={handleChange}
                 />
               </Form.Group>
-              <Form.Group className="mb-3">
+              {/* <Form.Group className="mb-3">
                 <Form.Label>Banner Image URL</Form.Label>
                 <Form.Control
                   type="text"
@@ -135,7 +169,7 @@ const UpdateProfile = () => {
                   value={formData.bannerImage}
                   onChange={handleChange}
                 />
-              </Form.Group>
+              </Form.Group> */}
               <Form.Group className="mb-3">
                 <Form.Label>Logo URL</Form.Label>
                 <Form.Control
@@ -171,8 +205,8 @@ const UpdateProfile = () => {
             </Form>
           </Card.Body>
         </Card>
-      </Container>
-    </div>
+      </Row>
+    </Container>
   );
 };
 
