@@ -10,7 +10,9 @@ import {
 } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import styles from "../../styles/Login.module.css";
 import axios from "../../axios";
+import Link from "next/link";
 
 const SignupForm = () => {
   const router = useRouter();
@@ -414,6 +416,12 @@ const SignupForm = () => {
               <Button type="submit" variant="primary" disabled={loading}>
                 {loading ? "Signing Up..." : "Sign Up"}
               </Button>
+              <div className={styles.links} style={{ marginTop: "10px" }}>
+                {/* <a href="#">Forgot password?</a> */}
+                <p>
+                  Already have an account? <Link href="/login">Login</Link>
+                </p>
+              </div>
             </Form>
           </Col>
         </Row>
