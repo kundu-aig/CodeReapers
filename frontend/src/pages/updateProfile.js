@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Card, Alert, Spinner } from "react-bootstrap";
+import { Form, Button, Card, Alert, Spinner, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -56,103 +56,115 @@ const UpdateProfile = () => {
   };
 
   return (
-    <Card>
-      <Card.Header>
-        Update Profile
-        <Button
-          variant="secondary"
-          className="float-end"
-          onClick={() => router.push("/")}
-        >
-          Go to Dashboard
-        </Button>
-      </Card.Header>
-      <Card.Body>
-        {error && <Alert variant="danger">{error}</Alert>}
-        {success && <Alert variant="success">{success}</Alert>}
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>First Name</Form.Label>
-            <Form.Control
-              type="text"
-              name="firstname"
-              value={formData.firstname}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Last Name</Form.Label>
-            <Form.Control
-              type="text"
-              name="lastname"
-              value={formData.lastname}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Photo URL</Form.Label>
-            <Form.Control
-              type="text"
-              name="photo"
-              value={formData.photo}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Tagline</Form.Label>
-            <Form.Control
-              type="text"
-              name="tagline"
-              value={formData.tagline}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Banner Image URL</Form.Label>
-            <Form.Control
-              type="text"
-              name="bannerImage"
-              value={formData.bannerImage}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Logo URL</Form.Label>
-            <Form.Control
-              type="text"
-              name="logo"
-              value={formData.logo}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>URL Handle</Form.Label>
-            <Form.Control
-              type="text"
-              name="urlHandle"
-              value={formData.urlHandle}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit" disabled={loading}>
-            {loading ? (
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              />
-            ) : (
-              "Update Profile"
-            )}
-          </Button>
-        </Form>
-      </Card.Body>
-    </Card>
+    <div
+      style={{
+        background: "linear-gradient(to bottom, #3a7bd5, #00d2ff)",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Container className="mobilemarginprofile">
+        <Card>
+          <Card.Header>
+            Update Profile
+            <Button
+              variant="secondary"
+              className="float-end"
+              onClick={() => router.push("/")}
+            >
+              Go to Dashboard
+            </Button>
+          </Card.Header>
+          <Card.Body>
+            {error && <Alert variant="danger">{error}</Alert>}
+            {success && <Alert variant="success">{success}</Alert>}
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="firstname"
+                  value={formData.firstname}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="lastname"
+                  value={formData.lastname}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Photo URL</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="photo"
+                  value={formData.photo}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Tagline</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="tagline"
+                  value={formData.tagline}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Banner Image URL</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="bannerImage"
+                  value={formData.bannerImage}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Logo URL</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="logo"
+                  value={formData.logo}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>URL Handle</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="urlHandle"
+                  value={formData.urlHandle}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Button variant="primary" type="submit" disabled={loading}>
+                {loading ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  "Update Profile"
+                )}
+              </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Container>
+    </div>
   );
 };
 

@@ -18,3 +18,12 @@ a {
 .pad-9{
   padding: 4.5rem;
 }
+
+.mobilemarginprofile{
+   margin: 10rem;
+}
+@media only screen and (max-width: 600px) {
+  .mobilemarginprofile {
+   margin: 1rem;
+  }
+}
