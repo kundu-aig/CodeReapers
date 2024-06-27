@@ -10,6 +10,7 @@ const __dirname = dirname(__filename);
 
 export async function addTextWatermarkToPdf(inputPath, originalFilename) {
     try {
+        
         // Load the existing PDF
         const pdfBuffer = await fs.readFile(inputPath);
         const pdfDoc = await PDFDocument.load(pdfBuffer);
