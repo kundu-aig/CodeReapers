@@ -20,15 +20,16 @@ export default function Login() {
 
         try{
            let response= await apiClient.post("url",{email,password});
-           
-        }catch(error){
 
-        }
-        localStorage.setItem("authToken", "abcd");
+           localStorage.setItem("authToken", "abcd");
         localStorage.setItem(
           "userData",
           JSON.stringify({ name: "nitin", userType: "market" })
         );
+        }catch(error){
+
+        }
+        
         
     };
 
