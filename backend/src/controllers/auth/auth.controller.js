@@ -12,6 +12,7 @@ import jwt from 'jsonwebtoken';
 
 const signUp = async (req, res) => {
   try {
+    console.log("=>>>>>>>>>>>>>>>>>>>filename",req.filename)
     const { email, urlHandle } = req.body;
 
     let isUserAvailable = await UserModel.findOne({$or: [{ email: email }, { urlHandle: urlHandle }]});
