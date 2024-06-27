@@ -43,6 +43,7 @@ export default function Login() {
             setLoginStatus("error")
             console.log(error)
             setError(error.data.error.message)
+            
         }
         
         
