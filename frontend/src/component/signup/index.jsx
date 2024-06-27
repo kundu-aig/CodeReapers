@@ -24,8 +24,8 @@ const SignupForm = () => {
     userType: "",
     lob: "",
     urlHandle: "",
-    photo: null, // Changed to file object
-    logo: null, // Changed to file object
+    photo: null,
+    logo: null,
     tagLine: "",
   });
 
@@ -79,7 +79,7 @@ const SignupForm = () => {
       errors.urlHandle = "URL Handle (Slug) is required";
     }
     if (formData.userType === "agent" && !formData.photo) {
-      errors.photo = "Photo URL is required";
+      errors.photo = "Photo is required";
     }
     // if (formData.userType === "agent" && !formData.bannerImage) {
     //   errors.photo = "BannerImage URL is required";
@@ -105,25 +105,25 @@ const SignupForm = () => {
         formDataToSend.append("lob", formData.lob);
         formDataToSend.append("urlHandle", formData.urlHandle);
         formDataToSend.append("tagLine", formData.tagLine);
-        // formDataToSend.append("photo", formData.photo);
+        formDataToSend.append("photo", formData.photo);
         formDataToSend.append("logo", formData.logo);
         console.log("formData", formData);
         console.log("formDataToSend", formDataToSend.get("photo"));
 
         //! API CALL
-        let res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
-          formDataToSend,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
-        console.log("res", res);
-        if (!res.data || !res.data.statusCode === 200) {
-          throw Error("Signup API Error");
-        }
-        let userData = res?.data?.data;
-        let { token, userType } = userData;
+        // let res = await axios.post(
+        //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
+        //   formDataToSend,
+        //   {
+        //     headers: { "Content-Type": "multipart/form-data" },
+        //   }
+        // );
+        // console.log("res", res);
+        // if (!res.data || !res.data.statusCode === 200) {
+        //   throw Error("Signup API Error");
+        // }
+        // let userData = res?.data?.data;
+        // let { token, userType } = userData;
 
         // Reset form data and show success message
         setFormData({
@@ -141,8 +141,17 @@ const SignupForm = () => {
         setFormErrors({});
         setFormStatus("success");
         localStorage.setItem("authToken", "token");
-        localStorage.setItem("userData", JSON.stringify(userData));
-        router.push(`/dashboard/${userType}`);
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            firstName: "nitin",
+            lastName: "kr",
+            photo: "",
+            logo: "",
+            userType: "market",
+          })
+        );
+        router.push(`/dashboard/market`);
       } catch (error) {
         console.error("Error submitting form:", error);
         setFormStatus("error");
@@ -157,7 +166,7 @@ const SignupForm = () => {
   return (
     <div
       style={{
-        background: "linear-gradient(to right, #bcdade, #ffffff)",
+        // background: "linear-gradient(to right, #bcdade, #ffffff)",
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",

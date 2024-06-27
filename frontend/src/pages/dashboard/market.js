@@ -15,7 +15,7 @@ const MarketDashboard = () => {
     router.push("/");
   };
   return (
-    <Container fluid>
+    <Container>
       <Row className="justify-content-between align-items-center py-3">
         <Col>
           <Button variant="primary" onClick={logout}>
