@@ -160,7 +160,7 @@ const SignupForm = () => {
   return (
     <div
       style={{
-        background: "linear-gradient(to right, #0072ff, #00c6ff)",
+        background: "linear-gradient(to right, #bcdade, #ffffff)",
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
@@ -173,7 +173,7 @@ const SignupForm = () => {
             <Form
               onSubmit={handleSubmit}
               style={{
-                background: "white",
+                background: "rgb(255, 255, 254)",
                 padding: "2rem",
                 borderRadius: "8px",
               }}
