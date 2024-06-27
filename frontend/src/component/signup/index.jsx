@@ -10,7 +10,9 @@ import {
 } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import axios from "axios";
+import styles from "../../styles/Login.module.css";
+import axios from "../../axios";
+import Link from "next/link";
 
 const SignupForm = () => {
   const router = useRouter();
@@ -22,25 +24,33 @@ const SignupForm = () => {
     userType: "",
     lob: "",
     urlHandle: "",
-    photo: "",
-    bannerImage: "",
+    photo: null, // Changed to file object
+    bannerImage: null, // Changed to file object
     tagLine: "",
   });
 
   const [formErrors, setFormErrors] = useState({});
   const [formStatus, setFormStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]:
-        type === "checkbox"
-          ? checked
-            ? [...prevState[name], value]
-            : prevState[name].filter((item) => item !== value)
-          : value,
-    }));
+    const { name, value, type, checked, files } = e.target;
+    if (type === "file") {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: files[0], // Store only the first file
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]:
+          type === "checkbox"
+            ? checked
+              ? [...prevState[name], value]
+              : prevState[name].filter((item) => item !== value)
+            : value,
+      }));
+    }
   };
 
   const validateForm = () => {
@@ -68,27 +78,49 @@ const SignupForm = () => {
     if (formData.userType === "agent" && !formData.urlHandle.trim()) {
       errors.urlHandle = "URL Handle (Slug) is required";
     }
-    if (formData.userType === "agent" && !formData.photo.trim()) {
+    if (formData.userType === "agent" && !formData.photo) {
       errors.photo = "Photo URL is required";
     }
+    // if (formData.userType === "agent" && !formData.bannerImage) {
+    //   errors.photo = "BannerImage URL is required";
+    // }
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       setLoading(true);
       try {
-        // Simulate API call with a timeout (replace with actual API call)
+        const formDataToSend = new FormData();
+        formDataToSend.append("firstName", formData.firstName);
+        formDataToSend.append("lastName", formData.lastName);
+        formDataToSend.append("email", formData.email);
+        formDataToSend.append("password", formData.password);
+        formDataToSend.append("userType", formData.userType);
+        formDataToSend.append("lob", formData.lob);
+        formDataToSend.append("urlHandle", formData.urlHandle);
+        formDataToSend.append("tagLine", formData.tagLine);
+        formDataToSend.append("photo", formData.photo);
+        formDataToSend.append("bannerImage", formData.bannerImage);
+        // console.log("formData", formData);
+        // console.log("formDataToSend", formDataToSend.get("photo"));
+
+        //! API CALL
         // let res = await axios.post(
         //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
-        //   formData
+        //   formDataToSend
         // );
 
-        // console.log("res", res);
+        // if (!res.data || !res.data.statusCode === 200) {
+        //   throw Error("Signup API Error");
+        // }
+        // let userData = res?.data?.data;
+        // let { token, userType } = userData;
 
         // Reset form data and show success message
         setFormData({
@@ -99,18 +131,23 @@ const SignupForm = () => {
           userType: "",
           lob: "",
           urlHandle: "",
-          photo: "",
-          bannerImage: "",
+          photoUrl: null,
+          bannerUrl: null,
           tagLine: "",
         });
         setFormErrors({});
         setFormStatus("success");
-        localStorage.setItem("authToken", "abcd");
+        localStorage.setItem("authToken", "token");
         localStorage.setItem(
           "userData",
-          JSON.stringify({ name: "nitin", userType: "market" })
+          JSON.stringify({
+            firstName: "nitin",
+            lastName: "kumar",
+            photo: "https://picsum.photos/200/300.jpg",
+            userType: "agent",
+          })
         );
-        router.push("/dashboard/market");
+        router.push(`/dashboard/agent`);
       } catch (error) {
         console.error("Error submitting form:", error);
         setFormStatus("error");
@@ -125,7 +162,7 @@ const SignupForm = () => {
   return (
     <div
       style={{
-        background: "linear-gradient(to bottom, #3a7bd5, #00d2ff)",
+        background: "linear-gradient(to right, #bcdade, #ffffff)",
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
@@ -138,14 +175,14 @@ const SignupForm = () => {
             <Form
               onSubmit={handleSubmit}
               style={{
-                background: "white",
+                background: "rgb(255, 255, 254)",
                 padding: "2rem",
                 borderRadius: "8px",
               }}
             >
               {/* Basic Fields */}
               <Form.Group className="mb-3" controlId="firstName">
-                <Form.Label>First Name</Form.Label>
+                <Form.Label>First Name *</Form.Label>
                 <Form.Control
                   type="text"
                   className={formErrors.firstName ? "is-invalid" : ""}
@@ -163,7 +200,7 @@ const SignupForm = () => {
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="lastName">
-                <Form.Label>Last Name</Form.Label>
+                <Form.Label>Last Name *</Form.Label>
                 <Form.Control
                   type="text"
                   className={formErrors.lastName ? "is-invalid" : ""}
@@ -181,7 +218,7 @@ const SignupForm = () => {
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="email">
-                <Form.Label>Email address</Form.Label>
+                <Form.Label>Email address *</Form.Label>
                 <Form.Control
                   type="email"
                   className={formErrors.email ? "is-invalid" : ""}
@@ -199,7 +236,7 @@ const SignupForm = () => {
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="password">
-                <Form.Label>Password</Form.Label>
+                <Form.Label>Password *</Form.Label>
                 <Form.Control
                   type="password"
                   className={formErrors.password ? "is-invalid" : ""}
@@ -219,7 +256,7 @@ const SignupForm = () => {
 
               {/* User Type Field */}
               <Form.Group className="mb-3">
-                <Form.Label>User Type</Form.Label>
+                <Form.Label>User Type *</Form.Label>
                 <div>
                   <Form.Check
                     inline
@@ -255,7 +292,7 @@ const SignupForm = () => {
               {/* Line of Business (LOB) Field */}
               {/* {formData.userType === "agent" && ( */}
               <Form.Group className="mb-3">
-                <Form.Label>Line of Business</Form.Label>
+                <Form.Label>Line of Business *</Form.Label>
                 <div>
                   <Form.Check
                     inline
@@ -302,7 +339,7 @@ const SignupForm = () => {
               {formData.userType === "agent" && (
                 <>
                   <Form.Group className="mb-3" controlId="urlHandle">
-                    <Form.Label>URL Handle (Slug)</Form.Label>
+                    <Form.Label>URL Handle (Slug) *</Form.Label>
                     <Form.Control
                       type="text"
                       className={formErrors.urlHandle ? "is-invalid" : ""}
@@ -319,26 +356,27 @@ const SignupForm = () => {
                     )}
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="photo">
-                    <Form.Label>Photo URL</Form.Label>
+                    <Form.Label>Photo *</Form.Label>
                     <Form.Control
-                      type="url"
-                      className={formErrors.photo ? "is-invalid" : ""}
+                      type="file"
+                      className={formErrors.photoUrl ? "is-invalid" : ""}
                       name="photo"
-                      value={formData.photo}
+                      accept="image/*"
                       onChange={handleChange}
                     />
-                    {formErrors.photo && (
+                    {formErrors.photoUrl && (
                       <Form.Control.Feedback type="invalid">
-                        {formErrors.photo}
+                        {formErrors.photoUrl}
                       </Form.Control.Feedback>
                     )}
                   </Form.Group>
+
                   <Form.Group className="mb-3" controlId="bannerImage">
-                    <Form.Label>Banner Image URL</Form.Label>
+                    <Form.Label>Banner Image</Form.Label>
                     <Form.Control
-                      type="url"
+                      type="file"
                       name="bannerImage"
-                      value={formData.bannerImage}
+                      accept="image/*"
                       onChange={handleChange}
                     />
                   </Form.Group>
@@ -378,6 +416,12 @@ const SignupForm = () => {
               <Button type="submit" variant="primary" disabled={loading}>
                 {loading ? "Signing Up..." : "Sign Up"}
               </Button>
+              <div className={styles.links} style={{ marginTop: "10px" }}>
+                {/* <a href="#">Forgot password?</a> */}
+                <p>
+                  Already have an account? <Link href="/login">Login</Link>
+                </p>
+              </div>
             </Form>
           </Col>
         </Row>

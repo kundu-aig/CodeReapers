@@ -4,10 +4,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../styles/Login.module.css';
 import Loader from '../component/Loader';
+import apiClient from '../axios';
+import {  Alert } from 'react-bootstrap';
+
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loginStatus, setLoginStatus] = useState(null);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
@@ -16,23 +20,37 @@ export default function Login() {
         e.preventDefault();
         setIsLoading(true);
 
-        const res = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
+        try{
 
-        const data = await res.json();
-
-        setIsLoading(false);
-
-        if (res.ok) {
-            router.push('/dashboard');
-        } else {
-            setError(data.message);
+           let res= await apiClient.post("url",{email,password});
+           if (!res.data || !res.data.statusCode === 200) {
+              throw Error("error");
+            }
+            
+            let userData = res?.data?.data;
+            
+            let { token, userType } = userData;
+            localStorage.setItem("authToken", token);
+        localStorage.setItem(
+          "userData",
+          JSON.stringify(userData)
+        );
+        setLoginStatus("success")
+        setError("")
+        router.push(`/dashboard/${userType}`)
+           
+        }catch(error){
+            setLoginStatus("error")
+            console.log(error)
+            setError(error.data.error.message)
+            
         }
+        
+        
+    };
+
+    const handleSignUpRedirect = () => {
+        router.push('/signup');
     };
 
     return (
@@ -63,10 +81,20 @@ export default function Login() {
                     </div>
                     {error && <p className={styles.error}>{error}</p>}
                     <button type="submit" className={styles.loginButton}>Login</button>
+                    {/* Form Submission Status */}
+              {loginStatus === "success" && (
+                <Alert variant="success">LogIn successful!</Alert>
+              )}
+              {loginStatus === "error" && (
+                <Alert variant="danger">
+                  Error submitting the form. Please try again later.
+                </Alert>
+              )}
                 </form>
                 <div className={styles.links}>
-                    <a href="#">Forgot password?</a>
-                    <p>Don't have an account? <a href="#">Create new</a></p>
+                    {/* <a href="#">Forgot password?</a> */}
+                    <p>Don't have an account? <a onClick={handleSignUpRedirect} href="#">Create new</a></p>
+                
                 </div>
             </div>
         </div>

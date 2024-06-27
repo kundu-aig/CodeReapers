@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Card, Alert, Spinner, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 import axios from "axios";
+import withAuth from "../hoc/withAuth";
 
 const UpdateProfile = () => {
   const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     photo: "",
-    tagline: "",
+    tagLine: "",
     bannerImage: "",
     logo: "",
     urlHandle: "",
@@ -17,6 +18,9 @@ const UpdateProfile = () => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // Retrieve user data from localStorage
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
   useEffect(() => {
     // Fetch existing data from localStorage
@@ -33,7 +37,7 @@ const UpdateProfile = () => {
     e.preventDefault();
     setLoading(true);
     // Basic validation
-    if (!formData.firstname || !formData.lastname || !formData.urlHandle) {
+    if (!formData.firstName || !formData.lastName || !formData.urlHandle) {
       setError("First Name, Last Name, and URL Handle are required.");
       setLoading(false);
       return;
@@ -72,7 +76,7 @@ const UpdateProfile = () => {
             <Button
               variant="secondary"
               className="float-end"
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/dashboard/" + userData?.userType)}
             >
               Go to Dashboard
             </Button>
@@ -86,7 +90,7 @@ const UpdateProfile = () => {
                 <Form.Control
                   type="text"
                   name="firstname"
-                  value={formData.firstname}
+                  value={formData.firstName}
                   onChange={handleChange}
                   required
                 />
@@ -96,7 +100,7 @@ const UpdateProfile = () => {
                 <Form.Control
                   type="text"
                   name="lastname"
-                  value={formData.lastname}
+                  value={formData.lastName}
                   onChange={handleChange}
                   required
                 />
@@ -109,13 +113,17 @@ const UpdateProfile = () => {
                   value={formData.photo}
                   onChange={handleChange}
                 />
+                <img
+                  style={{ height: "150px", width: "150px", margin: "10px" }}
+                  src={formData.photo}
+                ></img>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Tagline</Form.Label>
                 <Form.Control
                   type="text"
-                  name="tagline"
-                  value={formData.tagline}
+                  name="tagLine"
+                  value={formData.tagLine}
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -168,4 +176,4 @@ const UpdateProfile = () => {
   );
 };
 
-export default UpdateProfile;
+export default withAuth(UpdateProfile, ["agent", "market"]);

@@ -5,11 +5,11 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to right, #0072ff, #00c6ff);
+    background: linear-gradient(to right, #bcdade, #ffffff);
 }
 
 .loginCard {
-    background: #fff;
+    background: rgb(255, 254, 253);
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -71,6 +71,9 @@
     color: #0072ff;
     text-decoration: none;
     font-weight: 500;
+}
+.links a:hover{
+    color: #005bb5;
 }
 
 .orDivider {
