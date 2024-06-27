@@ -82,10 +82,10 @@ export default function Login() {
                     {error && <p className={styles.error}>{error}</p>}
                     <button type="submit" className={styles.loginButton}>Login</button>
                     {/* Form Submission Status */}
-              {formStatus === "success" && (
+              {loginStatus === "success" && (
                 <Alert variant="success">LogIn successful!</Alert>
               )}
-              {formStatus === "error" && (
+              {loginStatus === "error" && (
                 <Alert variant="danger">
                   Error submitting the form. Please try again later.
                 </Alert>
