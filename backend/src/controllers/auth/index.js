@@ -1,11 +1,11 @@
 import express from 'express';
 import {signUp,login}  from './auth.controller.js';
-
+import imageUploader from "../../utils/imageUploader.js"
 
 const router = express.Router();
 
 // API routes
-router.post(`/signup`, signUp);
+router.post(`/signup`,imageUploader.upload().single('logo'), signUp);
 router.post(`/login`, login);
 
 

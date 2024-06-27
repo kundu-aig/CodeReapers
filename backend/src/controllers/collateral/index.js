@@ -6,6 +6,8 @@ const router = express.Router();
 
 // API routes
 router.post(`/`, createCollateral);
+// router.get(`/all`, getAllCollateral);
+
 
 
 // Export the router
