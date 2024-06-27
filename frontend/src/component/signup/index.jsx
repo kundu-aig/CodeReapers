@@ -25,7 +25,7 @@ const SignupForm = () => {
     lob: "",
     urlHandle: "",
     photo: null, // Changed to file object
-    bannerImage: null, // Changed to file object
+    logo: null, // Changed to file object
     tagLine: "",
   });
 
@@ -105,22 +105,25 @@ const SignupForm = () => {
         formDataToSend.append("lob", formData.lob);
         formDataToSend.append("urlHandle", formData.urlHandle);
         formDataToSend.append("tagLine", formData.tagLine);
-        formDataToSend.append("photo", formData.photo);
-        formDataToSend.append("bannerImage", formData.bannerImage);
-        // console.log("formData", formData);
-        // console.log("formDataToSend", formDataToSend.get("photo"));
+        // formDataToSend.append("photo", formData.photo);
+        formDataToSend.append("logo", formData.logo);
+        console.log("formData", formData);
+        console.log("formDataToSend", formDataToSend.get("photo"));
 
         //! API CALL
-        // let res = await axios.post(
-        //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
-        //   formDataToSend
-        // );
-
-        // if (!res.data || !res.data.statusCode === 200) {
-        //   throw Error("Signup API Error");
-        // }
-        // let userData = res?.data?.data;
-        // let { token, userType } = userData;
+        let res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
+          formDataToSend,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+        console.log("res", res);
+        if (!res.data || !res.data.statusCode === 200) {
+          throw Error("Signup API Error");
+        }
+        let userData = res?.data?.data;
+        let { token, userType } = userData;
 
         // Reset form data and show success message
         setFormData({
@@ -138,16 +141,8 @@ const SignupForm = () => {
         setFormErrors({});
         setFormStatus("success");
         localStorage.setItem("authToken", "token");
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({
-            firstName: "nitin",
-            lastName: "kumar",
-            photo: "https://picsum.photos/200/300.jpg",
-            userType: "agent",
-          })
-        );
-        router.push(`/dashboard/agent`);
+        localStorage.setItem("userData", JSON.stringify(userData));
+        router.push(`/dashboard/${userType}`);
       } catch (error) {
         console.error("Error submitting form:", error);
         setFormStatus("error");
@@ -371,11 +366,11 @@ const SignupForm = () => {
                     )}
                   </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="bannerImage">
-                    <Form.Label>Banner Image</Form.Label>
+                  <Form.Group className="mb-3" controlId="logo">
+                    <Form.Label>Logo</Form.Label>
                     <Form.Control
                       type="file"
-                      name="bannerImage"
+                      name="logo"
                       accept="image/*"
                       onChange={handleChange}
                     />
