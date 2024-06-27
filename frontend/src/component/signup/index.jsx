@@ -13,6 +13,7 @@ import { useState } from "react";
 import axios from "axios";
 
 const SignupForm = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,9 +28,8 @@ const SignupForm = () => {
   });
 
   const [formErrors, setFormErrors] = useState({});
-  const [formStatus, setFormStatus] = useState(null); // 'success' or 'error' message
-  const [loading, setLoading] = useState(false); // Loading state for API call
-  const router = useRouter();
+  const [formStatus, setFormStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevState) => ({
@@ -83,12 +83,12 @@ const SignupForm = () => {
       setLoading(true);
       try {
         // Simulate API call with a timeout (replace with actual API call)
-        let res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
-          formData
-        );
+        // let res = await axios.post(
+        //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
+        //   formData
+        // );
 
-        console.log("res", res);
+        // console.log("res", res);
 
         // Reset form data and show success message
         setFormData({
@@ -105,12 +105,12 @@ const SignupForm = () => {
         });
         setFormErrors({});
         setFormStatus("success");
-        // localStorage.setItem("authToken", "abcd");
-        // localStorage.setItem(
-        //   "userData",
-        //   JSON.stringify({ name: "nitin", userType: "market" })
-        // );
-        // router.push("/dashboard/market");
+        localStorage.setItem("authToken", "abcd");
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({ name: "nitin", userType: "market" })
+        );
+        router.push("/dashboard/market");
       } catch (error) {
         console.error("Error submitting form:", error);
         setFormStatus("error");
