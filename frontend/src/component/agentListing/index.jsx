@@ -9,6 +9,9 @@ import {
   Col,
 } from "react-bootstrap";
 import axios from "../../axios";
+// import ShareDialog from "../shareDialog/ShareDialog";
+// import ShareButton from "../shareDialog/ShareButton";
+import Share from "../../component/shareDialog/Share";
 
 const dummyData = [
   {
@@ -44,18 +47,20 @@ const DocumentTable = () => {
   const [lobFilter, setLobFilter] = useState("");
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 2;
+  const [showShare, setShowShare] = useState(false);
+  const [urlToShare, setUrlToShare] = useState("");
+  const itemsPerPage = 10;
 
-  function titleCase(str = "") {
-    var splitStr = str?.toLowerCase().split(" ");
-    for (var i = 0; i < splitStr?.length; i++) {
+  function titleCase(str) {
+    var splitStr = str.toLowerCase().split(" ");
+    for (var i = 0; i < splitStr.length; i++) {
       // You do not need to check if i is larger than splitStr length, as your for does that for you
       // Assign it back to the array
       splitStr[i] =
-        splitStr[i]?.charAt(0)?.toUpperCase() + splitStr[i]?.substring(1);
+        splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
     }
     // Directly return the joined string
-    return splitStr?.join(" ");
+    return splitStr.join(" ");
   }
 
   useEffect(() => {
@@ -71,25 +76,38 @@ const DocumentTable = () => {
         setTotalPages(response.data.totalPages);
         // setData(dummyData);
         // setTotalPages(2);
-        const token = localStorage.getItem("authToken");
-      } catch (error) {}
+        console.log("agent response" + response.data);
+      } catch (error) {
+        console.log("error");
+      }
     };
     fetchData();
   }, [currentPage, categoryFilter, lobFilter]);
 
-  const handleCopyUrl = (url) => {
-    navigator.clipboard
-      .writeText(url)
-      .then(() => {
-        alert("URL copied to clipboard!");
-      })
-      .catch((err) => {
-        console.error("Failed to copy the URL: ", err);
-      });
-  };
+  // const handleCopyUrl = (title,url) => {
+  //   // navigator.clipboard
+  //   //   .writeText(title)
+  //   //   .then(() => {
+  //   //     alert("URL copied to clipboard!");
+  //   //   })
+  //   //   .catch((err) => {
+  //   //     console.error("Failed to copy the URL: ", err);
+  //   //   });
+  //     const userData = JSON.parse(localStorage.getItem("userData")) || {};
+  //     var urlHandle = userData.urlHandle
+  //     if(urlHandle){
+  //       console.log("share dialog called")
+  //       var urlToShare = `${process.env.NEXT_PUBLIC_API_BASE_URL}$/${urlHandle}/media-${title}`
+  //       console.log(`urlToShare - ${urlToShare}`)
+  //       setUrlToShare(urlToShare)
+  //       setShowShare(true)
+  //     }
+  // };
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
   return (
     <>
+      {/* {showShare && <ShareButton title={"Share"} text={"Share your Url"} url={urlToShare}/>} */}
       <Card className="p-2">
         <Form>
           <Row className="my-3">
@@ -137,10 +155,9 @@ const DocumentTable = () => {
             <tr>
               <th>Document Title</th>
               <th>Category</th>
-              <th>Agent Name</th>
-              <th>URL</th>
               <th>Document Type</th>
               <th>LOB</th>
+              <th>URL</th>
             </tr>
           </thead>
           <tbody>
@@ -149,27 +166,27 @@ const DocumentTable = () => {
                 <td>{item?.title}</td>
                 <td>{titleCase(item?.category)}</td>
                 <td>
-                  {titleCase(
-                    item?.agentId?.firstName + " " + item?.agentId?.lastName
-                  )}
-                </td>
-                <td>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => handleCopyUrl(item?.media?.url)}
-                  >
-                    Copy
-                  </Button>
-                </td>
-                <td>
                   {item?.media?.mediaType?.includes("video")
                     ? "Video"
                     : item?.media?.mediaType?.includes("image")
                     ? "Image"
                     : "PDF"}
                 </td>
-                <td>{item.lob}</td>
+                <td>{titleCase(item?.lob)}</td>
+                <td>
+                  {/* <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => handleCopyUrl(item.documentTitle,item.url)}
+                  >
+                    Share
+                  </Button> */}
+                  <Share
+                    title={`${userData.firstName} ${userData.lastName}`}
+                    tagline={userData?.tagLine ?? "TailorMade"}
+                    url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/${userData?.urlHandle}/${item?.title}`}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>

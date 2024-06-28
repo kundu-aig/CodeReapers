@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import withAuth from "../../hoc/withAuth";
 import { Container, Row, Col, Nav, Tab, Card, Button } from "react-bootstrap";
-import Listing from "../../component/marketListing";
+import Listing from "../../component/agentListing";
 // import Upload from "../../component/upload";
 import Profile from "../../component/profile";
 import { useRouter } from "next/router";

@@ -32,9 +32,10 @@ apiClient.interceptors.response.use(
   },
   (error) => {
     // Handle errors globally
-    // if (error.response.status === 401) {
-    //     // Handle unauthorized error, maybe redirect to login
-    // }
+    if (error.response.status === 401) {
+      // Handle unauthorized error, maybe redirect to login
+      window.location.href = "/login";
+    }
     return Promise.reject(error);
   }
 );

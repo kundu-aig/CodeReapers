@@ -14,17 +14,24 @@ export default function Page({ user }) {
       <div className="cardd">
         <div className="upper">
           <img
-            src={"https://i.imgur.com/Qtrsrk5.jpg" || user?.banner?.url}
+            src={user?.banner?.url}
             className="img-fluid"
+            onError={(event) => {
+              event.target.src = "https://i.imgur.com/Qtrsrk5.jpg";
+            }}
           />
         </div>
 
         <div className="user text-center">
           <div className="profile">
             <img
-              src={"https://i.imgur.com/JgYD2nQ.jpg" || user?.logo?.url}
+              src={user?.logo?.url}
               className="rounded-circle"
               width="80"
+              onError={(event) => {
+                event.target.src =
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQTb3Fp_DoCmuMr9Iktvv-QsPB4eQuN-DTTD0-pcCvSTGjlm0y0AJ7K-ZoCLMmBBUhLU0&usqp=CAU";
+              }}
             />
           </div>
         </div>

@@ -48,7 +48,7 @@ const Profile = () => {
             style={{
               marginLeft: "10px",
               padding: "5px 10px",
-              backgroundColor: "#e0e0e0",
+              // backgroundColor: "#e0e0e0",
               borderRadius: "10px",
               fontSize: "12px",
             }}
