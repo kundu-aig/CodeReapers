@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import {MONGO_URL } from '../config.js'
+const uri = "mongodb+srv://ritesh973mishra:9NjDEiZgOskoAheX@cluster0.rt7wnhp.mongodb.net/?appName=Cluster0";
 
 export const connectToMongo =async()=>{
     try {
