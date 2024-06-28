@@ -81,9 +81,16 @@ export const getPaginatedData = async (model, page, limit, query = {}) => {
   };
 };
 
-export default getPaginatedData;
 
-
+export const generateSearchQuery = (body) => {
+  const query = {};
+  for (const key in body) {
+      if (body.hasOwnProperty(key)) {
+          query[key] = body[key];
+      }
+  }
+  return query;
+}
 
 export const checkForFiles = (req, res, next) => {
   if (req.headers['content-type'] && req.headers['content-type'].includes('multipart/form-data')) {

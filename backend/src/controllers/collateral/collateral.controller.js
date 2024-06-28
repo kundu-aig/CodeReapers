@@ -1,8 +1,6 @@
 import CollateralModel from '../../models/collateral.model.js';
 import UserModel from '../../models/user.model.js';
-import { sendSuccessResponse, sendErrorResponse } from "../../utils/index.js";
-import getPaginatedData from '../../utils/index.js';
-
+import { sendSuccessResponse, sendErrorResponse ,getPaginatedData} from "../../utils/index.js";
 import { ObjectId } from 'mongodb';
 
 const listCollateral = async (req, res) => {
@@ -59,8 +57,25 @@ const createCollateral = async (req, res) => {
 };
 
 const searchMedia =  async(req,res)=>{
-  
+   const searchQuery = generateSearchQuery(req.body);
+    try {
+        const results = await SampleModel.find(searchQuery);
+        res.json(results);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
+
+const getAllAgentList = async (req, res) => {
+  try {
+    const { lob } = req.params;
+    const agentList = await UserModel.find({lob:lob})    
+    return sendSuccessResponse(res, 200, true, 'Agent list fetched successfully', agentList);
+  } catch (error) {
+    console.error('Error fetching agent list:', error);
+    return sendErrorResponse(res, 500, false, error);
+  }
+};
 
 const getFileMetaData = (req, field) => {
   return {
@@ -72,4 +87,4 @@ const getFileMetaData = (req, field) => {
   }
 }
 
-export { createCollateral, listCollateral };
+export { createCollateral, listCollateral,getAllAgentList };
