@@ -16,28 +16,45 @@ const Profile = () => {
   return (
     <Card style={{ display: "inline-block", padding: "10px" }}>
       <div style={{ display: "flex", alignItems: "center" }}>
-        {/* Display username (first name + last name) */}
-        <span>
-          {userData
-            ? `${userData?.firstName} ${userData?.lastName ?? ""}`
-            : "User"}
-        </span>
-        {/* Display user photo */}
         <div
           style={{
-            width: "40px",
-            height: "40px",
-            backgroundColor: "grey",
-            borderRadius: "50%",
-            display: "inline-block",
-            marginLeft: "10px",
-            backgroundImage: userData ? `url(${userData.photo})` : "none",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
-        ></div>
+        >
+          <div
+            style={{
+              width: "40px",
+              height: "40px",
+              backgroundColor: "grey",
+              borderRadius: "50%",
+              backgroundImage: userData ? `url(${userData?.logo})` : "none",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          ></div>
+          <span>
+            {userData
+              ? `${userData?.firstName} ${userData?.lastName ?? ""}`
+              : "User"}
+          </span>
+        </div>
 
-        {/* Dropdown for settings and logout */}
+        {userData?.lob && (
+          <span
+            style={{
+              marginLeft: "10px",
+              padding: "5px 10px",
+              backgroundColor: "#e0e0e0",
+              borderRadius: "10px",
+              fontSize: "12px",
+            }}
+          >
+            {userData?.lob}
+          </span>
+        )}
+
         <DropdownButton
           id="dropdown-basic-button"
           title=""
@@ -46,7 +63,7 @@ const Profile = () => {
           size="sm"
           style={{ marginLeft: "10px" }}
         >
-          <Dropdown.Item href="/updateProfile">Settings</Dropdown.Item>
+          <Dropdown.Item href="/updateProfile">Update Profile</Dropdown.Item>
           <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
         </DropdownButton>
       </div>
