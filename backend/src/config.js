@@ -1,6 +1,6 @@
 
-const PORT = process.env.PORT || "1402";
-const MONGO_URL = process.env.MONGO_URL || "mongodb://localhost:27017/social-crm";
+const PORT = process.env.PORT || "14002";
+const MONGO_URL = process.env.MONGO_URL || "mongodb+srv://kundu221997:kundu221997@cluster0.cgtx8qr.mongodb.net/";
 
 
 export {
