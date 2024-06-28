@@ -10,7 +10,9 @@ const jwtValiodation = () =>{
             '/api/auth/login',
             '/api/auth/signup',
             /^\/public\/.*/,
+            /^\/api\/collateral\/details\/[^\/]+$/ 
         ]
     });
 }
+
 export{jwtValiodation}

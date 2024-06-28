@@ -14,7 +14,7 @@ const signUp = async (req, res) => {
       };
       return sendErrorResponse(res, 400, false, error);
     }
-    if(req.body.userType === 'agent'){
+    if (req.body.userType === 'agent') {
       req.body.logo = await getUploadedFileUrl(req, 'logo');
       req.body.banner = await getUploadedFileUrl(req, 'banner');
     }
@@ -67,7 +67,7 @@ const login = async (req, res) => {
 };
 
 const generateTokenPayload = (data) => {
-  return { userId: data._id, userType: data.userType,lob:data.lob }
+  return { userId: data._id, userType: data.userType, lob: data.lob }
 }
 
 const getJwtToken = (payload) => {

@@ -1,3 +1,4 @@
+import path from 'path';
 import CollateralModel from '../../models/collateral.model.js';
 import UserModel from '../../models/user.model.js';
 import { sendSuccessResponse, sendErrorResponse, getPaginatedData } from "../../utils/index.js";
@@ -9,7 +10,7 @@ const listCollateral = async (req, res) => {
     const { page = 1, limit = 10 } = req.query;
 
     if (userType !== "agent") {
-      return sendErrorResponse(res, 401, false, { message: 'Not authorized access' });
+      return sendErrorResponse(res, 401, false, { message: 'Unauthorized access' });
     }
     // Ensure page and limit are numbers
     const pageNumber = parseInt(page, 10);
@@ -49,6 +50,8 @@ const createCollateral = async (req, res) => {
     if (!collateral) {
       return sendErrorResponse(res, 500, false, { message: "Something went wrong" });
     }
+
+
     return sendSuccessResponse(res, 201, true, 'Collateral created successfully', collateral);
   } catch (error) {
     console.error('Error creating collateral:', error);
@@ -59,7 +62,10 @@ const createCollateral = async (req, res) => {
 const searchCollateral = async (req, res) => {
   try {
     const { title, urlHandle } = req.params
-    const collateral = await CollateralModel.findOne({ title: title })
+    const collateral = await CollateralModel.findOne({ title: title }).populate({
+      path: 'agentId',
+      select: 'name firstName lastName email lob urlHandle logo banner tagLine'
+    })
     if (!collateral) {
       return sendErrorResponse(res, 400, false, { message: "collateral not found" });
     }
@@ -72,6 +78,9 @@ const searchCollateral = async (req, res) => {
 
 const getAllAgentList = async (req, res) => {
   try {
+    if (req.auth.userType !== 'market') {
+      return sendErrorResponse(res, 404, false, { message: "Unauthorized access" });
+    }
     const { lob } = req.params;
     const agentList = await UserModel.find({ lob: lob })
     return sendSuccessResponse(res, 200, true, 'Agent list fetched successfully', agentList);
@@ -87,7 +96,7 @@ const getFileMetaData = (req, field) => {
     fileName: req.files[field][0]['filename'],
     mediaType: req.files[field][0]['mimetype'],
     fieldname: req.files[field][0]['fieldname'],
-    title: req.files[field][0]['fieldname'] + '-' + Date.now()+Math.floor(1000 + Math.random() * 9000),
+    title: req.files[field][0]['fieldname'] + '-' + Date.now() + Math.floor(1000 + Math.random() * 9000),
   }
 }
 
@@ -100,5 +109,6 @@ const generateSearchQuery = (body) => {
   }
   return query;
 }
+
 
 export { createCollateral, listCollateral, getAllAgentList, searchCollateral };

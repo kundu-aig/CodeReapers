@@ -20,7 +20,7 @@ const collateralSchema = new mongoose.Schema({
     },
     agentId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'user'
     },
     media: {
         type: Object,

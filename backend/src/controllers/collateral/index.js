@@ -3,7 +3,6 @@ import imageUploader from "../../utils/imageUploader.js"
 import {createCollateral,listCollateral,getAllAgentList,searchCollateral}  from './collateral.controller.js';
 import {checkForFiles} from '../../utils/index.js'
 
-
 const router = express.Router();
 
 // API routes
@@ -11,11 +10,7 @@ const router = express.Router();
 router.get(`/agentlist/:lob`,getAllAgentList);
 router.get(`/`,listCollateral);
 router.post(`/`,checkForFiles, imageUploader.upload('large'),createCollateral);
-router.post(`/:title` ,searchCollateral);
-
-
-
-
+router.post(`/details/:title` ,searchCollateral);
 
 // Export the router
 export default router;
