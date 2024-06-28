@@ -1,6 +1,6 @@
 import CollateralModel from '../../models/collateral.model.js';
 import UserModel from '../../models/user.model.js';
-import { sendSuccessResponse, sendErrorResponse ,getPaginatedData} from "../../utils/index.js";
+import { sendSuccessResponse, sendErrorResponse, getPaginatedData } from "../../utils/index.js";
 import { ObjectId } from 'mongodb';
 
 const listCollateral = async (req, res) => {
@@ -56,20 +56,24 @@ const createCollateral = async (req, res) => {
   }
 };
 
-const searchMedia =  async(req,res)=>{
-   const searchQuery = generateSearchQuery(req.body);
-    try {
-        const results = await SampleModel.find(searchQuery);
-        res.json(results);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+const searchCollateral = async (req, res) => {
+  try {
+    const { title, urlHandle } = req.params
+    const collateral = await CollateralModel.findOne({ title: title })
+    if (!collateral) {
+      return sendErrorResponse(res, 400, false, { message: "collateral not found" });
     }
+    return sendSuccessResponse(res, 200, true, 'Collateral list fetched successfully', collateral);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 
 const getAllAgentList = async (req, res) => {
   try {
     const { lob } = req.params;
-    const agentList = await UserModel.find({lob:lob})    
+    const agentList = await UserModel.find({ lob: lob })
     return sendSuccessResponse(res, 200, true, 'Agent list fetched successfully', agentList);
   } catch (error) {
     console.error('Error fetching agent list:', error);
@@ -83,8 +87,18 @@ const getFileMetaData = (req, field) => {
     fileName: req.files[field][0]['filename'],
     mediaType: req.files[field][0]['mimetype'],
     fieldname: req.files[field][0]['fieldname'],
-    title: req.files[field][0]['fieldname'] + '-' + Date.now(),
+    title: req.files[field][0]['fieldname'] + '-' + Date.now()+Math.floor(1000 + Math.random() * 9000),
   }
 }
 
-export { createCollateral, listCollateral,getAllAgentList };
+const generateSearchQuery = (body) => {
+  const query = {};
+  for (const key in body) {
+    if (body.hasOwnProperty(key)) {
+      query[key] = body[key];
+    }
+  }
+  return query;
+}
+
+export { createCollateral, listCollateral, getAllAgentList, searchCollateral };
