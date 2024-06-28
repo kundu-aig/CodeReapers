@@ -1,5 +1,8 @@
 # CodeReapers
 
+# Clone
+git clone https://git-codecommit.ap-south-1.amazonaws.com/v1/repos/repo14
+
 ## Starting Project
 
 1. cd backend

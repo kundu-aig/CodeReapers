@@ -8,8 +8,7 @@ module.exports = {
       env: {
         PORT: 14002,
         NODE_ENV: "production",
-        PORT:14002,
-        MONGO_URL:"mongourl",
+        MONGO_URL:"mongodb+srv://kundu221997:kundu221997@cluster0.cgtx8qr.mongodb.net/",
         JWT_SECRET: "riteshnitincodeappears1234@"
       },
     },
