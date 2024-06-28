@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Alert, Spinner, Card } from "react-bootstrap";
-import axios from "axios";
+import axios from "../../axios";
 
 const UploadForm = () => {
   const [file, setFile] = useState(null);
@@ -57,8 +57,10 @@ const UploadForm = () => {
     formData.append("lob", lob);
     formData.append("agent", agent);
 
+    console.log("formData", file, category, lob, agent);
+    return;
     try {
-      const response = await axios.post("/api/upload", formData, {
+      const response = await axios.post("/api/collateral", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
