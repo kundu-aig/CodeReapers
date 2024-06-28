@@ -18,16 +18,18 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+    setError("");
     try {
-      let res = await apiClient.post("url", { email, password });
+      let res = await apiClient.post(`/api/auth/login`, { email, password });
       if (!res.data || !res.data.statusCode === 200) {
         throw Error("error");
       }
 
-      let userData = res?.data?.data;
+      // console.log("res", res);
+      let userData = res?.data?.data?.data;
+      let token = res?.data?.data?.token;
+      let userType = userData?.userType;
 
-      let { token, userType } = userData;
       localStorage.setItem("authToken", token);
       localStorage.setItem("userData", JSON.stringify(userData));
       setLoginStatus("success");
@@ -36,7 +38,14 @@ export default function Login() {
     } catch (error) {
       setLoginStatus("error");
       console.log(error);
-      setError(error.data.error.message);
+      let errMsg = error?.response?.data?.error?.message;
+      if (errMsg) {
+        setError(errMsg);
+      } else {
+        setError("Error in login");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 

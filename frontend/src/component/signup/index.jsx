@@ -24,13 +24,14 @@ const SignupForm = () => {
     userType: "",
     lob: "",
     urlHandle: "",
-    bannerImage: null,
+    banner: null,
     logo: null,
     tagLine: "",
   });
 
   const [formErrors, setFormErrors] = useState({});
   const [formStatus, setFormStatus] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -81,8 +82,8 @@ const SignupForm = () => {
     if (formData.userType === "agent" && !formData.logo) {
       errors.photo = "Logo is required";
     }
-    // if (formData.userType === "agent" && !formData.bannerImage) {
-    //   errors.photo = "BannerImage URL is required";
+    // if (formData.userType === "agent" && !formData.banner) {
+    //   errors.photo = "banner URL is required";
     // }
 
     setFormErrors(errors);
@@ -92,7 +93,7 @@ const SignupForm = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setErrorMessage("");
     if (validateForm()) {
       setLoading(true);
       try {
@@ -103,28 +104,31 @@ const SignupForm = () => {
         formDataToSend.append("password", formData.password);
         formDataToSend.append("userType", formData.userType);
         formDataToSend.append("lob", formData.lob);
-        formDataToSend.append("urlHandle", formData.urlHandle);
-        formDataToSend.append("tagLine", formData.tagLine);
-        formDataToSend.append("bannerImage", formData.bannerImage);
-        formDataToSend.append("logo", formData.logo);
-        console.log("formData", formData);
-        console.log("formDataToSend", formDataToSend.get("photo"));
+        if (formData.urlHandle)
+          formDataToSend.append("urlHandle", formData.urlHandle);
+        if (formData.tagLine)
+          formDataToSend.append("tagLine", formData.tagLine);
+        if (formData.banner) formDataToSend.append("banner", formData.banner);
+        if (formData.logo) formDataToSend.append("logo", formData.logo);
+        // console.log("formData", formData);
+        // console.log("formDataToSend", formDataToSend.get("photo"));
 
         //! API CALL
-        // let res = await axios.post(
-        //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
-        //   formDataToSend,
-        //   {
-        //     headers: { "Content-Type": "multipart/form-data" },
-        //   }
-        // );
-        // console.log("res", res);
-        // if (!res.data || !res.data.statusCode === 200) {
-        //   throw Error("Signup API Error");
-        // }
-        // let userData = res?.data?.data;
-        // let { token, userType } = userData;
+        let res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
+          formDataToSend,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
 
+        if (!res.data || !res.data.statusCode === 200) {
+          throw Error("Signup API Error");
+        }
+        let userData = res?.data?.data?.data;
+        let token = res?.data?.data?.token;
+        // console.log("reeee", userData, res?.data?.data);
+        let { userType } = userData;
         // Reset form data and show success message
         setFormData({
           firstName: "",
@@ -134,26 +138,21 @@ const SignupForm = () => {
           userType: "",
           lob: "",
           urlHandle: "",
-          photoUrl: null,
-          bannerUrl: null,
+          logo: null,
+          banner: null,
           tagLine: "",
         });
         setFormErrors({});
         setFormStatus("success");
-        localStorage.setItem("authToken", "token");
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({
-            firstName: "nitin",
-            lastName: "kr",
-            photo: "",
-            logo: "",
-            userType: "market",
-          })
-        );
-        router.push(`/dashboard/market`);
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("userData", JSON.stringify(userData));
+        router.push(`/dashboard/${userType}`);
       } catch (error) {
         console.error("Error submitting form:", error);
+        let errMsg = error?.response?.data?.error?.message;
+        if (errMsg) {
+          setErrorMessage(errMsg);
+        }
         setFormStatus("error");
       } finally {
         setLoading(false);
@@ -369,18 +368,18 @@ const SignupForm = () => {
                     maxLength={200}
                   />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="bannerImage">
+                <Form.Group className="mb-3" controlId="banner">
                   <Form.Label>Banner Image</Form.Label>
                   <Form.Control
                     type="file"
-                    className={formErrors.bannerImage ? "is-invalid" : ""}
-                    name="bannerImage"
+                    className={formErrors.banner ? "is-invalid" : ""}
+                    name="banner"
                     accept="image/*"
                     onChange={handleChange}
                   />
-                  {formErrors.bannerImage && (
+                  {formErrors.banner && (
                     <Form.Control.Feedback type="invalid">
-                      {formErrors.bannerImage}
+                      {formErrors.banner}
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>
@@ -400,10 +399,13 @@ const SignupForm = () => {
             {formStatus === "success" && (
               <Alert variant="success">Signup successful!</Alert>
             )}
-            {formStatus === "error" && (
+            {formStatus === "error" && errorMessage?.length === 0 && (
               <Alert variant="danger">
                 Error submitting the form. Please try again later.
               </Alert>
+            )}
+            {formStatus === "error" && errorMessage?.length > 0 && (
+              <Alert variant="danger">{errorMessage}</Alert>
             )}
 
             {/* Submit Button */}

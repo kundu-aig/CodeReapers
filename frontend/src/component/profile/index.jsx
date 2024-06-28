@@ -6,7 +6,7 @@ const Profile = () => {
 
   // Retrieve user data from localStorage
   const userData = JSON.parse(localStorage.getItem("userData"));
-
+  // console.log("userData", userData);
   // Logout function
   const logout = () => {
     localStorage.clear();
@@ -29,7 +29,9 @@ const Profile = () => {
               height: "40px",
               backgroundColor: "grey",
               borderRadius: "50%",
-              backgroundImage: userData ? `url(${userData?.logo})` : "none",
+              backgroundImage: userData
+                ? `url(${userData?.logo?.url})`
+                : "none",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
