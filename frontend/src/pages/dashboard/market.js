@@ -33,7 +33,7 @@ const MarketDashboard = () => {
           )}
           {router?.asPath?.includes("/dashboard") && (
             <Button
-              className="mx-4"
+              className="me-3"
               variant="primary"
               onClick={() => {
                 router.push("/");

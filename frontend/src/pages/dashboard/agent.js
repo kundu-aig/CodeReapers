@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import withAuth from "../../hoc/withAuth";
 import { Container, Row, Col, Nav, Tab, Card, Button } from "react-bootstrap";
 import Listing from "../../component/marketListing";
-import Upload from "../../component/upload";
+// import Upload from "../../component/upload";
 import Profile from "../../component/profile";
 import { useRouter } from "next/router";
 
@@ -62,7 +62,7 @@ const AgentDashboard = () => {
                 Listing
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item>
+            {/* <Nav.Item>
               <Nav.Link
                 eventKey="upload"
                 active={activeKey === "upload"}
@@ -70,7 +70,7 @@ const AgentDashboard = () => {
               >
                 Upload
               </Nav.Link>
-            </Nav.Item>
+            </Nav.Item> */}
           </Nav>
         </Col>
         <Col md={10}>
@@ -78,9 +78,9 @@ const AgentDashboard = () => {
             <Tab.Pane eventKey="listing" active={activeKey === "listing"}>
               <Listing />
             </Tab.Pane>
-            <Tab.Pane eventKey="upload" active={activeKey === "upload"}>
+            {/* <Tab.Pane eventKey="upload" active={activeKey === "upload"}>
               <Upload />
-            </Tab.Pane>
+            </Tab.Pane> */}
           </Tab.Content>
         </Col>
       </Row>
