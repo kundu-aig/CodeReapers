@@ -8,7 +8,8 @@ const jwtValiodation = () =>{
         path: [
             // public routes that don't require authentication
             '/api/auth/login',
-            '/api/auth/signup'
+            '/api/auth/signup',
+            /^\/public\/.*/,
         ]
     });
 }

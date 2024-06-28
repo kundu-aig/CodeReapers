@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import {LOB,CATEGORY} from '../constant.js'
 const collateralSchema = new mongoose.Schema({
 
     title: {
@@ -15,15 +15,15 @@ const collateralSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: LOB,
+        enum: CATEGORY,
         required: true
     },
     agentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     },
-    url: {
-        type: String,
+    media: {
+        type: Object,
         required: true
     },
 

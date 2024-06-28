@@ -3,28 +3,22 @@ import { sendSuccessResponse, sendErrorResponse } from "../../utils/index.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-
-
-
-
-
-
-
 const signUp = async (req, res) => {
   try {
-    console.log("=>>>>>>>>>>>>>>>>>>>filename",req.filename)
     const { email, urlHandle } = req.body;
 
-    let isUserAvailable = await UserModel.findOne({$or: [{ email: email }, { urlHandle: urlHandle }]});
+    let isUserAvailable = await UserModel.findOne({ $or: [{ email: email }, { urlHandle: urlHandle }] });
     if (isUserAvailable) {
       let error = {
         message: "Please provide unique email or handle url",
       };
       return sendErrorResponse(res, 400, false, error);
     }
+    req.body.logo = await getUploadedFileUrl(req, 'logo');
+    req.body.banner = await getUploadedFileUrl(req, 'banner');
 
     req.body.password = await bcrypt.hash(req.body.password, 10);;
-    let user          = await UserModel.create(req.body);
+    let user = await UserModel.create(req.body);
     if (!user) {
       let error = {
         message: "Soimething went wrong while creating the user",
@@ -32,12 +26,15 @@ const signUp = async (req, res) => {
       return sendErrorResponse(res, 400, false, error);
     }
 
-    return sendSuccessResponse( res,200,true,"User Created Successfully",user);
+    const payload = {
+      token: getJwtToken(generateTokenPayload(user)),
+      data: user
+    }
+    return sendSuccessResponse(res, 200, true, "User Created Successfully", payload);
   } catch (error) {
     return sendErrorResponse(res, 400, false, error);
   }
 };
-
 
 const login = async (req, res) => {
   try {
@@ -54,11 +51,11 @@ const login = async (req, res) => {
     if (!isMatch) {
       return sendErrorResponse(res, 400, false, { message: "Invalid email or password" });
     }
-    
+
 
     const payload = {
-        token: getJwtToken({name:"ritesh"}),
-        data: user
+      token: getJwtToken(generateTokenPayload(user)),
+      data: user
     }
 
     return sendSuccessResponse(res, 200, true, "Login successful", payload);
@@ -67,8 +64,22 @@ const login = async (req, res) => {
   }
 };
 
-const getJwtToken = (payload)=>{
-    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+const generateTokenPayload = (data) => {
+  return { userId: data._id, userType: data.userType }
+}
+
+const getJwtToken = (payload) => {
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' });
+}
+
+
+const getUploadedFileUrl = async (req, field) => {
+  return {
+    url: `${req.protocol}://${req.get('host')}/public/${field}s/${req.files[field][0]['filename']}`,
+    fileName: req.files[field][0]['filename'],
+
+  }
+
 }
 
 

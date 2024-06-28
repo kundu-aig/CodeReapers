@@ -1,15 +1,14 @@
 import 'dotenv/config'
 import express from 'express'
-import apiRoutes from "./routes/index.js"
-import { PORT,MONGO_URL } from './config.js'
 import cors from 'cors';
+import path from 'path'
+import apiRoutes from "./routes/index.js"
 import { connectToMongo } from './db/mongo.db.js'
 import {jwtValiodation} from './middlewares/expressJwt.js'
+import { PORT,MONGO_URL } from './config.js'
 
 
-
-
-
+const __dirname = path.resolve();
 const app = express();
 
 
@@ -22,7 +21,10 @@ app.use(cors('*'));
 // Middleware to parse form data (urlencoded)
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files from the "public" directory
 app.use(jwtValiodation())
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
 app.use('/api', apiRoutes)
 
 app.get('/', (req, res) => {

@@ -31,10 +31,10 @@ const userSchema = new mongoose.Schema({
     type    : String,
   },
   logo: {
-    type    : String,
+    type    : Object,
   },
-  bannerImage: {
-    type    : String,
+  banner: {
+    type    : Object,
   },
   tagLine: {
     type: String,
