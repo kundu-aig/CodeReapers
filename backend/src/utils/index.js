@@ -67,8 +67,12 @@ export const sendErrorResponse = (
 export const getPaginatedData = async (model, page, limit, query = {}) => {
   const skip = (page - 1) * limit;
   const [results, totalCount] = await Promise.all([
-    model.find(query).skip(skip).limit(limit),
+    model.find(query).skip(skip).limit(limit).populate({
+      path: 'agentId',
+      select: 'firstName lastName email'
+    }),,
     model.countDocuments(query)
+    
   ]);
 
   const totalPages = Math.ceil(totalCount / limit);

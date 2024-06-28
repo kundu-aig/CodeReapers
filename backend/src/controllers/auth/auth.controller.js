@@ -5,9 +5,13 @@ import jwt from 'jsonwebtoken';
 
 const signUp = async (req, res) => {
   try {
-    const { email, urlHandle } = req.body;
+    const { email, urlHandle, userType } = req.body;
+    const cond = [{ email: email }];
+    if (userType == 'agent') {
+      cond.push({ urlHandle: urlHandle })
+    }
 
-    let isUserAvailable = await UserModel.findOne({ $or: [{ email: email }, { urlHandle: urlHandle }] });
+    let isUserAvailable = await UserModel.findOne({ $or: cond });
     if (isUserAvailable) {
       let error = {
         message: "Please provide unique email or handle url",
@@ -78,8 +82,7 @@ const getJwtToken = (payload) => {
 const getUploadedFileUrl = async (req, field) => {
   return {
     url: `${req.protocol}://${req.get('host')}/public/${field}s/${req.files[field][0]['filename']}`,
-    fileName: req.files[field][0]['filename'],
-
+    fileName: req.files[field][0]['filename']
   }
 
 }

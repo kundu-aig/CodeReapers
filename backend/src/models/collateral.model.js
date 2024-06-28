@@ -26,8 +26,12 @@ const collateralSchema = new mongoose.Schema({
         type: Object,
         required: true
     },
+    createdBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    }
 
-});
+},{timestamps:true});
 
 const collateralModel = mongoose.model("collateral", collateralSchema);
 export default collateralModel;

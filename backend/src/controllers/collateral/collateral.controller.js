@@ -9,9 +9,13 @@ const listCollateral = async (req, res) => {
     const { lob, userId, userType } = req.auth;
     const { page = 1, limit = 10 } = req.query;
 
-    if (userType !== "agent") {
-      return sendErrorResponse(res, 401, false, { message: 'Unauthorized access' });
+    let query = {}
+    if (userType == "agent") {
+      query = { $and: [{ "agentId": ObjectId.createFromHexString(userId) }, { lob: lob }] }
+    } else {
+      query = { "createdBy": ObjectId.createFromHexString(userId) }
     }
+
     // Ensure page and limit are numbers
     const pageNumber = parseInt(page, 10);
     const limitNumber = parseInt(limit, 10);
@@ -19,7 +23,7 @@ const listCollateral = async (req, res) => {
     if (isNaN(pageNumber) || isNaN(limitNumber)) {
       return sendErrorResponse(res, 400, false, { message: 'Page and limit should be valid numbers' });
     };
-    const paginationData = await getPaginatedData(CollateralModel, pageNumber, limitNumber, { $and: [{ lob: lob }, { agentId: ObjectId.createFromHexString(userId) }] });
+    const paginationData = await getPaginatedData(CollateralModel, pageNumber, limitNumber, query);
 
     return sendSuccessResponse(res, 200, true, 'Collateral list fetched successfully', paginationData);
   } catch (error) {
@@ -40,11 +44,11 @@ const createCollateral = async (req, res) => {
       return sendErrorResponse(res, 500, false, { message: "Invalid Agent Id found" });
     }
 
-
     let fileMetaData = getFileMetaData(req, 'media');
     req.body.media = fileMetaData;
     req.body.title = fileMetaData.title;
     req.body.lob = isAgentExist.lob;
+    req.body.createdBy = ObjectId.createFromHexString(req.auth.userId)
     const collateral = await CollateralModel.create(req.body);
 
     if (!collateral) {
@@ -82,7 +86,7 @@ const getAllAgentList = async (req, res) => {
       return sendErrorResponse(res, 404, false, { message: "Unauthorized access" });
     }
     const { lob } = req.params;
-    const agentList = await UserModel.find({ lob: lob })
+    const agentList = await UserModel.find({ userType: 'agent' })
     return sendSuccessResponse(res, 200, true, 'Agent list fetched successfully', agentList);
   } catch (error) {
     console.error('Error fetching agent list:', error);
