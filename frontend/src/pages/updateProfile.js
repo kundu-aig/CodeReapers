@@ -114,8 +114,16 @@ const UpdateProfile = () => {
             <Card.Title>Update Profile</Card.Title>
           </Card.Header>
           <Card.Body>
-            {error && <Alert variant="danger">{error}</Alert>}
-            {success && <Alert variant="success">{success}</Alert>}
+            {error && (
+              <Alert dismissible variant="danger">
+                {error}
+              </Alert>
+            )}
+            {success && (
+              <Alert dismissible variant="success">
+                {success}
+              </Alert>
+            )}
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
                 <Form.Label>First Name</Form.Label>

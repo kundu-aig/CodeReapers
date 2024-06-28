@@ -88,10 +88,12 @@ export default function Login() {
 
           {/* Form Submission Status */}
           {loginStatus === "success" && (
-            <Alert variant="success">LogIn successful!</Alert>
+            <Alert dismissible variant="success">
+              LogIn successful!
+            </Alert>
           )}
           {loginStatus === "error" && (
-            <Alert variant="danger">
+            <Alert dismissible variant="danger">
               Error submitting the form. Please try again later.
             </Alert>
           )}
