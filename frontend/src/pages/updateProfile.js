@@ -20,7 +20,7 @@ const UpdateProfile = () => {
     lastName: "",
     photo: "",
     tagLine: "",
-    bannerImage: "",
+    banner: "",
     logo: "",
     urlHandle: "",
   });
@@ -154,11 +154,11 @@ const UpdateProfile = () => {
               </Form.Group> */}
 
               <Form.Group className="mb-3">
-                <Form.Label>Banner Image URL</Form.Label>
+                <Form.Label>Banner URL</Form.Label>
                 <Form.Control
                   type="text"
-                  name="bannerImage"
-                  value={formData.bannerImage}
+                  name="banner"
+                  value={formData?.banner?.url ?? formData.banner}
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -167,13 +167,13 @@ const UpdateProfile = () => {
                 <Form.Control
                   type="text"
                   name="logo"
-                  value={formData.logo}
+                  value={formData?.logo?.url ?? formData.logo}
                   onChange={handleChange}
                 />
-                {formData.logo && (
+                {formData.logo && formData?.logo?.url && (
                   <img
                     style={{ height: "150px", width: "150px", margin: "10px" }}
-                    src={formData.logo}
+                    src={formData?.logo?.url}
                   ></img>
                 )}
               </Form.Group>

@@ -30,8 +30,8 @@ export default function Home() {
   return (
     <>
       <main className={`container-md ${inter.className}`}>
-        <div className="d-flex justify-content-center align-items-center vh-100">
-          <div className="me-4">
+        <div className="d-flex flex-column flex-md-row justify-content-center align-items-center vh-100">
+          <div className="mb-4 mb-md-0 me-md-4">
             <img height={200} src="/home.svg" alt="Hero Image" />
           </div>
           <div className="d-flex flex-column align-items-center">
@@ -40,17 +40,19 @@ export default function Home() {
             {user ? (
               <button
                 type="button"
-                className="btn btn-primary me-2"
+                className="btn btn-primary mb-2 mb-md-0 me-md-2"
                 onClick={handleDashboardRedirect}
               >
                 Dashboard
               </button>
             ) : (
-              <div className="d-flex">
-                <Link className="btn btn-primary me-2" href="/login">
+              <div className="d-flex flex-column flex-md-row">
+                <Link
+                  className="btn btn-primary mb-2 mb-md-0 me-md-2"
+                  href="/login"
+                >
                   Login
                 </Link>
-
                 <Link className="btn btn-secondary" href="/signup">
                   Sign Up
                 </Link>
