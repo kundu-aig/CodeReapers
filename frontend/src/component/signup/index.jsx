@@ -370,13 +370,14 @@ const SignupForm = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="banner">
-                  <Form.Label>Banner Image</Form.Label>
+                  <Form.Label>Banner Image *</Form.Label>
                   <Form.Control
                     type="file"
                     className={formErrors.banner ? "is-invalid" : ""}
                     name="banner"
                     accept="image/*"
                     onChange={handleChange}
+                    required
                   />
                   {formErrors.banner && (
                     <Form.Control.Feedback type="invalid">
