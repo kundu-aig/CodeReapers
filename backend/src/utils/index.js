@@ -62,6 +62,38 @@ export const sendErrorResponse = (
 };
 
 
+// utils/pagination.js
+
+export const getPaginatedData = async (model, page, limit, query = {}) => {
+  const skip = (page - 1) * limit;
+  const [results, totalCount] = await Promise.all([
+    model.find(query).skip(skip).limit(limit),
+    model.countDocuments(query)
+  ]);
+
+  const totalPages = Math.ceil(totalCount / limit);
+
+  return {
+    results,
+    totalCount,
+    totalPages,
+    currentPage: page,
+  };
+};
+
+export default getPaginatedData;
+
+
+
+export const checkForFiles = (req, res, next) => {
+  if (req.headers['content-type'] && req.headers['content-type'].includes('multipart/form-data')) {
+    next();
+  } else {
+    next('route'); // Skip multer middleware if no files are present
+  }
+};
+
+
 
 
 

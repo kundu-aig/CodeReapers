@@ -14,8 +14,10 @@ const signUp = async (req, res) => {
       };
       return sendErrorResponse(res, 400, false, error);
     }
-    req.body.logo = await getUploadedFileUrl(req, 'logo');
-    req.body.banner = await getUploadedFileUrl(req, 'banner');
+    if(req.body.userType === 'agent'){
+      req.body.logo = await getUploadedFileUrl(req, 'logo');
+      req.body.banner = await getUploadedFileUrl(req, 'banner');
+    }
 
     req.body.password = await bcrypt.hash(req.body.password, 10);;
     let user = await UserModel.create(req.body);
@@ -32,7 +34,7 @@ const signUp = async (req, res) => {
     }
     return sendSuccessResponse(res, 200, true, "User Created Successfully", payload);
   } catch (error) {
-    return sendErrorResponse(res, 400, false, error);
+    return sendErrorResponse(res, 500, false, error);
   }
 };
 
@@ -49,7 +51,7 @@ const login = async (req, res) => {
     // Compare the provided password with the hashed password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return sendErrorResponse(res, 400, false, { message: "Invalid email or password" });
+      return sendErrorResponse(res, 401, false, { message: "Invalid email or password" });
     }
 
 
@@ -60,12 +62,12 @@ const login = async (req, res) => {
 
     return sendSuccessResponse(res, 200, true, "Login successful", payload);
   } catch (error) {
-    return sendErrorResponse(res, 400, false, error);
+    return sendErrorResponse(res, 500, false, error);
   }
 };
 
 const generateTokenPayload = (data) => {
-  return { userId: data._id, userType: data.userType }
+  return { userId: data._id, userType: data.userType,lob:data.lob }
 }
 
 const getJwtToken = (payload) => {

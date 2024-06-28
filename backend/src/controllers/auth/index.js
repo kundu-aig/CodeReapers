@@ -1,6 +1,7 @@
 import express from 'express';
 import {signUp,login}  from './auth.controller.js';
 import imageUploader from "../../utils/imageUploader.js"
+import {checkForFiles} from '../../utils/index.js'
 
 const router = express.Router();
 
