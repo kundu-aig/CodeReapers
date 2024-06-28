@@ -175,6 +175,7 @@ const SignupForm = () => {
             }}
           >
             {/* Basic Fields */}
+            <h1 className="text-center">Signup</h1>
             <Form.Group className="mb-3" controlId="firstName">
               <Form.Label>First Name *</Form.Label>
               <Form.Control
