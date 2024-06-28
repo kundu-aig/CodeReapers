@@ -35,7 +35,10 @@ export default function Home() {
             <img height={200} src="/home.svg" alt="Hero Image" />
           </div>
           <div className="d-flex flex-column align-items-center">
-            <h1 className="text-center mb-4">TailorMade for Success</h1>
+            <h1 className="text-center">TailorMade CMS</h1>
+            <h2 className="text-center pb-4">
+              Empowering Agents and Market Teams
+            </h2>
 
             {user ? (
               <button

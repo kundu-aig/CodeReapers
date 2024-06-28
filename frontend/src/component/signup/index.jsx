@@ -397,15 +397,19 @@ const SignupForm = () => {
 
             {/* Form Submission Status */}
             {formStatus === "success" && (
-              <Alert variant="success">Signup successful!</Alert>
+              <Alert dismissible variant="success">
+                Signup successful!
+              </Alert>
             )}
             {formStatus === "error" && errorMessage?.length === 0 && (
-              <Alert variant="danger">
+              <Alert dismissible variant="danger">
                 Error submitting the form. Please try again later.
               </Alert>
             )}
             {formStatus === "error" && errorMessage?.length > 0 && (
-              <Alert variant="danger">{errorMessage}</Alert>
+              <Alert dismissible variant="danger">
+                {errorMessage}
+              </Alert>
             )}
 
             {/* Submit Button */}
