@@ -137,7 +137,7 @@ const UpdateProfile = () => {
                   required
                 />
               </Form.Group>
-              <Form.Group className="mb-3">
+              {/* <Form.Group className="mb-3">
                 <Form.Label>Photo URL</Form.Label>
                 <Form.Control
                   type="text"
@@ -151,17 +151,9 @@ const UpdateProfile = () => {
                     src={formData.photo}
                   ></img>
                 )}
-              </Form.Group>
+              </Form.Group> */}
+
               <Form.Group className="mb-3">
-                <Form.Label>Tagline</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="tagLine"
-                  value={formData.tagLine}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-              {/* <Form.Group className="mb-3">
                 <Form.Label>Banner Image URL</Form.Label>
                 <Form.Control
                   type="text"
@@ -169,13 +161,28 @@ const UpdateProfile = () => {
                   value={formData.bannerImage}
                   onChange={handleChange}
                 />
-              </Form.Group> */}
+              </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Logo URL</Form.Label>
                 <Form.Control
                   type="text"
                   name="logo"
                   value={formData.logo}
+                  onChange={handleChange}
+                />
+                {formData.logo && (
+                  <img
+                    style={{ height: "150px", width: "150px", margin: "10px" }}
+                    src={formData.logo}
+                  ></img>
+                )}
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Tagline</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="tagLine"
+                  value={formData.tagLine}
                   onChange={handleChange}
                 />
               </Form.Group>

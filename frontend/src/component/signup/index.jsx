@@ -24,7 +24,7 @@ const SignupForm = () => {
     userType: "",
     lob: "",
     urlHandle: "",
-    photo: null,
+    bannerImage: null,
     logo: null,
     tagLine: "",
   });
@@ -78,8 +78,8 @@ const SignupForm = () => {
     if (formData.userType === "agent" && !formData.urlHandle.trim()) {
       errors.urlHandle = "URL Handle (Slug) is required";
     }
-    if (formData.userType === "agent" && !formData.photo) {
-      errors.photo = "Photo is required";
+    if (formData.userType === "agent" && !formData.logo) {
+      errors.photo = "Logo is required";
     }
     // if (formData.userType === "agent" && !formData.bannerImage) {
     //   errors.photo = "BannerImage URL is required";
@@ -105,7 +105,7 @@ const SignupForm = () => {
         formDataToSend.append("lob", formData.lob);
         formDataToSend.append("urlHandle", formData.urlHandle);
         formDataToSend.append("tagLine", formData.tagLine);
-        formDataToSend.append("photo", formData.photo);
+        formDataToSend.append("bannerImage", formData.bannerImage);
         formDataToSend.append("logo", formData.logo);
         console.log("formData", formData);
         console.log("formDataToSend", formDataToSend.get("photo"));
@@ -350,24 +350,8 @@ const SignupForm = () => {
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="photo">
-                  <Form.Label>Photo *</Form.Label>
-                  <Form.Control
-                    type="file"
-                    className={formErrors.photoUrl ? "is-invalid" : ""}
-                    name="photo"
-                    accept="image/*"
-                    onChange={handleChange}
-                  />
-                  {formErrors.photoUrl && (
-                    <Form.Control.Feedback type="invalid">
-                      {formErrors.photoUrl}
-                    </Form.Control.Feedback>
-                  )}
-                </Form.Group>
-
                 <Form.Group className="mb-3" controlId="logo">
-                  <Form.Label>Logo</Form.Label>
+                  <Form.Label>Logo *</Form.Label>
                   <Form.Control
                     type="file"
                     name="logo"
@@ -384,6 +368,21 @@ const SignupForm = () => {
                     onChange={handleChange}
                     maxLength={200}
                   />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="bannerImage">
+                  <Form.Label>Banner Image</Form.Label>
+                  <Form.Control
+                    type="file"
+                    className={formErrors.bannerImage ? "is-invalid" : ""}
+                    name="bannerImage"
+                    accept="image/*"
+                    onChange={handleChange}
+                  />
+                  {formErrors.bannerImage && (
+                    <Form.Control.Feedback type="invalid">
+                      {formErrors.bannerImage}
+                    </Form.Control.Feedback>
+                  )}
                 </Form.Group>
               </>
             )}

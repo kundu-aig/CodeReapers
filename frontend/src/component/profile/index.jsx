@@ -29,7 +29,7 @@ const Profile = () => {
               height: "40px",
               backgroundColor: "grey",
               borderRadius: "50%",
-              backgroundImage: userData ? `url(${userData.photo})` : "none",
+              backgroundImage: userData ? `url(${userData?.logo})` : "none",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
