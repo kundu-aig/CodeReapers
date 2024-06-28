@@ -15,15 +15,23 @@ a {
   text-decoration: none;
 }
 
-.pad-9{
+.pad-9 {
   padding: 4.5rem;
 }
 
-.mobilemarginprofile{
-   margin: 10rem;
+.mobilemarginprofile {
+  margin: 10rem;
 }
 @media only screen and (max-width: 600px) {
   .mobilemarginprofile {
-   margin: 1rem;
+    margin: 1rem;
   }
+}
+
+.form-control {
+  padding: 0.4rem 0.4rem;
+}
+
+.form-select {
+  padding: 0.4rem 0.4rem;
 }
